@@ -7,20 +7,22 @@ public class Solution
     static HashMap<Integer,BigInteger> factorialHashMap;
     public static String getDistinctConfigurationsOf(int w, int h, int s)
     {
-        factorialHashMap = new HashMap<>();
-        int totalSymmetries = calcTotalSymmetries(w, h);
+        BigInteger totalSymmetries = calcTotalSymmetries(w, h);
         return "-1";
     }
 
-    private static int calcTotalSymmetries(int w, int h)
+    public static BigInteger calcTotalSymmetries(int w, int h)
     {
-        return factorial(w).multiply(factorial(h)).intValue();
+        return factorial(w).multiply(factorial(h));
 
     }
     private static BigInteger factorial(int n)
     {
         int i = 1;
         BigInteger factorialProd = null;
+        if(factorialHashMap == null)
+            factorialHashMap = new HashMap<>();
+
         if(!factorialHashMap.containsKey(n))
         {
             if (factorialHashMap.size() > 0)
@@ -46,5 +48,13 @@ public class Solution
         else
             factorialProd = factorialHashMap.get(n);
         return factorialProd;
+    }
+
+
+    public static BigInteger chooseFrom(int n, int m)
+    {
+        BigInteger numerator = factorial(n);
+        BigInteger denominator = factorial(m).multiply(factorial((n-m)));
+        return numerator.divide(denominator);
     }
 }
