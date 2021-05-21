@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class SolutionTest
 {
@@ -15,13 +16,6 @@ public class SolutionTest
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
     @Test
-    public void Find3Choose2()
-    {
-        BigInteger expectedAnswer = new BigInteger("3");
-        BigInteger actualAnswer = Solution.chooseFrom(3,2);
-        Assertions.assertEquals(expectedAnswer, actualAnswer);
-    }
-    @Test
     public void FindDistinctNonEquivConfigurationsOf2x3MatrixWith4Colors()
     {
         int w = 3;
@@ -30,5 +24,29 @@ public class SolutionTest
         String expectedAnswer = "430";
         String actualAnswer = Solution.getDistinctConfigurationsOf(w,h,s);
         Assertions.assertEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
+    public void FindDistinctNonEquivConfigurationsOf2x2MatrixWith2Colors()
+    {
+        int w = 2;
+        int h = 2;
+        int s = 2;
+        String expectedAnswer = "7";
+        String actualAnswer = Solution.getDistinctConfigurationsOf(w,h,s);
+        Assertions.assertEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
+    public void FindPartitionOf()
+    {
+        int w = 4;
+        int[][] expectedAnswer = {
+                {4},
+                {3,1},
+                {2,2},
+                {2,1,1},
+                {1,1,1,1},
+        };
+        int[][] actualAnswer = Solution.PartitionOf(w);
+        Assertions.assertArrayEquals(expectedAnswer, actualAnswer);
     }
 }
