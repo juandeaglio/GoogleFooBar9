@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Assertions;
+
 import java.math.BigInteger;
 import java.util.*;
 
@@ -8,7 +10,20 @@ public class Solution
     public static String getDistinctConfigurationsOf(int w, int h, int s)
     {
         BigInteger totalSymmetries = calcTotalSymmetries(w, h);
-        return "-1";
+        int[][] colPartitions = partitionOf(w);
+        int[][] rowPartitions = partitionOf(h);
+        BigInteger result = BigInteger.ZERO;
+        for(int i = 0; i < colPartitions.length; i++)
+        {
+            for(int j = 0; j < rowPartitions.length; j++)
+            {
+                int[] firstPartition = colPartitions[i];
+                int[] secondPartition = rowPartitions[j];
+                int count = Solution.CountTotalCyclesOfGroupForPartition(firstPartition, w) * Solution.CountTotalCyclesOfGroupForPartition(secondPartition, h);
+                result = result.add(BigInteger.valueOf(s).pow(Solution.MultiplySymmetricGroups(firstPartition, secondPartition)).multiply(BigInteger.valueOf(count)));
+            }
+        }
+        return result.divide(totalSymmetries).toString();
     }
 
     public static BigInteger calcTotalSymmetries(int w, int h)
@@ -49,7 +64,7 @@ public class Solution
         return factorialProd;
     }
 
-    public static int[][] PartitionOf(int w)
+    public static int[][] partitionOf(int w)
     {
         ArrayList<int[]> partitions = new ArrayList();
         int[] currPartition = {w};
@@ -89,11 +104,9 @@ public class Solution
             newPartition = new int[currPartition.length + 1];
             newPartition[indexPicked] = currPartition[indexPicked]-1;
             newPartition[indexPicked+1] = 1;
-            if(indexPicked < currPartition.length-2)
+            for (int i = indexPicked + 1; i < currPartition.length; i++)
             {
-                for (int i = indexPicked + 1; i < currPartition.length; i++) {
-                    newPartition[i + 1] = currPartition[i];
-                }
+                newPartition[i + 1] = currPartition[i];
             }
             for(int i = 0; i < indexPicked;i++)
             {
@@ -114,5 +127,52 @@ public class Solution
                 indexChosen = i;
         }
         return indexChosen;
+    }
+
+    public static int CountTotalCyclesOfGroupForPartition(int[] partition, int partitionOf)
+    {
+        BigInteger result = factorial(partitionOf);
+        int currVal = partition[partition.length-1];
+        int count = 1;
+        for(int i = partition.length-2; i >= 0; i--)
+        {
+            if(currVal != partition[i])
+            {
+                result = result.divide(BigInteger.valueOf((long)Math.pow(currVal,count)));
+                result = result.divide(factorial(count));
+                count = 1;
+                currVal = partition[i];
+            }
+            else
+            {
+                count++;
+            }
+        }
+        result = result.divide(BigInteger.valueOf((long)Math.pow(currVal,count)));
+        result = result.divide(factorial(count));
+        return result.intValue();
+    }
+    public static int gcd(int a, int b)
+    {
+        int gcd = -1;
+        for(int i = 1; i <= a && i <= b; i++)
+        {
+            if(a%i==0 && b%i==0)
+                gcd = i;
+        }
+        return gcd;
+    }
+
+    public static int MultiplySymmetricGroups(int[] firstPartition, int[] secondPartition)
+    {
+        int symmGroupCount = 0;
+        for(int i = 0; i < firstPartition.length; i++)
+        {
+            for(int j = 0; j < secondPartition.length; j++)
+            {
+                symmGroupCount += gcd(firstPartition[i], secondPartition[j]);
+            }
+        }
+        return symmGroupCount;
     }
 }
