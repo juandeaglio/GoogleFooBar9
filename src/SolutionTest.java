@@ -15,6 +15,16 @@ public class SolutionTest
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
     @Test
+    public void Given12x12MatrixWith20StatesFindAllEquivalenceClasses()
+    {
+        int w = 12;
+        int h = 12;
+        int s = 20;
+        String expectedAnswer = "97195340925396730736950973830781340249131679073592360856141700148734207997877978005419735822878768821088343977969209139721682171487959967012286474628978470487193051591840";
+        String actualAnswer = Solution.getDistinctConfigurationsOf(w,h,s);
+        Assertions.assertEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
     public void FindDistinctNonEquivConfigurationsOf2x3MatrixWith4Colors()
     {
         int w = 3;
@@ -68,8 +78,8 @@ public class SolutionTest
     {
         int partitionOf = 4;
         int[] partition = {1,1,1,1};
-        int expectedAnswer = 1;
-        int actualAnswer = Solution.CountTotalCyclesOfGroupForPartition(partition, partitionOf);
+        BigInteger expectedAnswer = BigInteger.ONE;
+        BigInteger actualAnswer = Solution.CountTotalCyclesOfGroupForPartition(partition, partitionOf);
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
     @Test
@@ -77,8 +87,8 @@ public class SolutionTest
     {
         int partitionOf = 5;
         int[] partition = {3,2};
-        int expectedAnswer = 20;
-        int actualAnswer = Solution.CountTotalCyclesOfGroupForPartition(partition, partitionOf);
+        BigInteger expectedAnswer = BigInteger.valueOf(20);
+        BigInteger actualAnswer = Solution.CountTotalCyclesOfGroupForPartition(partition, partitionOf);
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
     @Test
@@ -86,8 +96,8 @@ public class SolutionTest
     {
         int partitionOf = 5;
         int[] partition = {2,2,1};
-        int expectedAnswer = 15;
-        int actualAnswer = Solution.CountTotalCyclesOfGroupForPartition(partition, partitionOf);
+        BigInteger expectedAnswer = BigInteger.valueOf(15);
+        BigInteger actualAnswer = Solution.CountTotalCyclesOfGroupForPartition(partition, partitionOf);
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
     @Test
@@ -118,8 +128,8 @@ public class SolutionTest
         int[] secondPartition = {2,2};
         int states = 4;
         BigInteger expectedAnswer = BigInteger.valueOf(states).pow(8).multiply(BigInteger.valueOf(18));
-        int count = Solution.CountTotalCyclesOfGroupForPartition(firstPartition, dimensions) * Solution.CountTotalCyclesOfGroupForPartition(secondPartition, dimensions);
-        BigInteger actualAnswer = BigInteger.valueOf(states).pow(Solution.MultiplySymmetricGroups(firstPartition,secondPartition)).multiply(BigInteger.valueOf(count));
+        BigInteger count = Solution.CountTotalCyclesOfGroupForPartition(firstPartition, dimensions).multiply(Solution.CountTotalCyclesOfGroupForPartition(secondPartition, dimensions));
+        BigInteger actualAnswer = BigInteger.valueOf(states).pow(Solution.MultiplySymmetricGroups(firstPartition,secondPartition)).multiply(count);
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
 }

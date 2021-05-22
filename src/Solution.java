@@ -19,8 +19,8 @@ public class Solution
             {
                 int[] firstPartition = colPartitions[i];
                 int[] secondPartition = rowPartitions[j];
-                int count = Solution.CountTotalCyclesOfGroupForPartition(firstPartition, w) * Solution.CountTotalCyclesOfGroupForPartition(secondPartition, h);
-                result = result.add(BigInteger.valueOf(s).pow(Solution.MultiplySymmetricGroups(firstPartition, secondPartition)).multiply(BigInteger.valueOf(count)));
+                BigInteger count = Solution.CountTotalCyclesOfGroupForPartition(firstPartition, w).multiply(Solution.CountTotalCyclesOfGroupForPartition(secondPartition, h));
+                result = result.add(BigInteger.valueOf(s).pow(Solution.MultiplySymmetricGroups(firstPartition, secondPartition)).multiply(count));
             }
         }
         return result.divide(totalSymmetries).toString();
@@ -129,7 +129,7 @@ public class Solution
         return indexChosen;
     }
 
-    public static int CountTotalCyclesOfGroupForPartition(int[] partition, int partitionOf)
+    public static BigInteger CountTotalCyclesOfGroupForPartition(int[] partition, int partitionOf)
     {
         BigInteger result = factorial(partitionOf);
         int currVal = partition[partition.length-1];
@@ -150,7 +150,7 @@ public class Solution
         }
         result = result.divide(BigInteger.valueOf((long)Math.pow(currVal,count)));
         result = result.divide(factorial(count));
-        return result.intValue();
+        return result;
     }
     public static int gcd(int a, int b)
     {
