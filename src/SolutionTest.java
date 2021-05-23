@@ -55,7 +55,7 @@ public class SolutionTest
                 {2,1,1},
                 {1,1,1,1},
         };
-        int[][] actualAnswer = Solution.partitionOf(w);
+        int[][] actualAnswer = Solution.decompose(w);
         Assertions.assertArrayEquals(expectedAnswer, actualAnswer);
     }
     @Test
@@ -67,10 +67,11 @@ public class SolutionTest
                 {4,1},
                 {3,2},
                 {3,1,1},
+                {2,2,1},
                 {2,1,1,1},
                 {1,1,1,1,1}
         };
-        int[][] actualAnswer = Solution.partitionOf(w);
+        int[][] actualAnswer = Solution.decompose(w);
         Assertions.assertArrayEquals(expectedAnswer, actualAnswer);
     }
     @Test
@@ -131,5 +132,12 @@ public class SolutionTest
         BigInteger count = Solution.CountTotalCyclesOfGroupForPartition(firstPartition, dimensions).multiply(Solution.CountTotalCyclesOfGroupForPartition(secondPartition, dimensions));
         BigInteger actualAnswer = BigInteger.valueOf(states).pow(Solution.MultiplySymmetricGroups(firstPartition,secondPartition)).multiply(count);
         Assertions.assertEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
+    public void Given5PartitionTheNumber()
+    {
+        int number = 7;
+        int[][] result = Solution.decompose(number);
+        Assertions.assertTrue(true);
     }
 }

@@ -1,17 +1,16 @@
-import org.junit.jupiter.api.Assertions;
-
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.*;
 
 public class Solution
 {
     static HashMap<Integer,BigInteger> factorialHashMap;
-    static HashSet<String> swaps;
+    static HashMap<Integer, int[][]> currPartition;
     public static String getDistinctConfigurationsOf(int w, int h, int s)
     {
         BigInteger totalSymmetries = calcTotalSymmetries(w, h);
-        int[][] colPartitions = partitionOf(w);
-        int[][] rowPartitions = partitionOf(h);
+        int[][] colPartitions = decompose(w);
+        int[][] rowPartitions = decompose(h);
         BigInteger result = BigInteger.ZERO;
         for(int i = 0; i < colPartitions.length; i++)
         {
@@ -63,22 +62,46 @@ public class Solution
             factorialProd = factorialHashMap.get(n);
         return factorialProd;
     }
-
-    public static int[][] partitionOf(int w)
+    public static int[][] partition(int n)
     {
-        ArrayList<int[]> partitions = new ArrayList();
-        int[] currPartition = {w};
-        int indexPicked = 0;
-        int valueAtIndex = currPartition[indexPicked];
-        partitions.add(currPartition);
-        while(valueAtIndex != 1)
+        int[][] toAdd = {{1}};
+        currPartition.put(1, toAdd);
+        return decompose(n);
+    }
+    public static int[][] appendArray(int r, int[] toAppend, int[][] array)
+    {
+        int sal = array.length;   //determines length of secondArray
+        int[][] result = new int[1 + sal][];  //resultant array of size first array and second array
+        System.arraycopy(array, 0, result, 0, sal);
+        int[] newArr = new int[toAppend.length+1];
+        System.arraycopy(toAppend, 0, newArr, 1, toAppend.length);
+        newArr[0] = r;
+        result[array.length] = newArr;
+        return result;
+    }
+    public static int[][] decompose(int n)
+    {
+        if(currPartition == null)
+            currPartition = new HashMap<>();
+        if(currPartition.containsKey(n))
+            return currPartition.get(n);
+        int[] toAdd = new int[1];
+        toAdd[0] = n;
+        int[][] result = new int[1][];
+        result[0] = toAdd;
+        int partitionCurrVal;
+
+        for(int i = 1; i < n; i++)
         {
-            currPartition = FindPartitionSuccessor(currPartition, indexPicked);
-            partitions.add(currPartition);
-            indexPicked = FindLargestNonOneIndex(currPartition);
-            valueAtIndex = currPartition[indexPicked];
+            partitionCurrVal = n - i;
+            int[][] recursivePartition = decompose(i);
+            for(int r = 0; r < recursivePartition.length; r++)
+                if (recursivePartition[r][0] <= partitionCurrVal)
+                    result = appendArray(partitionCurrVal, recursivePartition[r], result);
         }
-        return convertIntegers(partitions);
+
+        currPartition.put(n, result);
+        return result;
     }
     public static int[][] convertIntegers(ArrayList<int[]> integers)
     {
@@ -90,45 +113,6 @@ public class Solution
         }
         return result;
     }
-    private static int[] FindPartitionSuccessor(int[] currPartition, int indexPicked)
-    {
-        int[] newPartition;
-        if(indexPicked == currPartition.length-2 && currPartition[indexPicked]-1 >= currPartition[indexPicked+1]+1)
-        {
-            newPartition = currPartition.clone();
-            newPartition[indexPicked] = currPartition[indexPicked]-1;
-            newPartition[indexPicked+1] += 1;
-        }
-        else
-        {
-            newPartition = new int[currPartition.length + 1];
-            newPartition[indexPicked] = currPartition[indexPicked]-1;
-            newPartition[indexPicked+1] = 1;
-            for (int i = indexPicked + 1; i < currPartition.length; i++)
-            {
-                newPartition[i + 1] = currPartition[i];
-            }
-            for(int i = 0; i < indexPicked;i++)
-            {
-                newPartition[i] = currPartition[i];
-            }
-        }
-        return newPartition;
-    }
-
-    private static int FindLargestNonOneIndex(int[] currPartition)
-    {
-        int currentVal = 1;
-        int indexChosen = 0;
-        for(int i = currPartition.length-1; i >= 0 && indexChosen == 0; i--)
-        {
-            currentVal = currPartition[i];
-            if(currentVal > 1)
-                indexChosen = i;
-        }
-        return indexChosen;
-    }
-
     public static BigInteger CountTotalCyclesOfGroupForPartition(int[] partition, int partitionOf)
     {
         BigInteger result = factorial(partitionOf);
