@@ -1,6 +1,6 @@
-import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Solution
 {
@@ -62,12 +62,6 @@ public class Solution
             factorialProd = factorialHashMap.get(n);
         return factorialProd;
     }
-    public static int[][] partition(int n)
-    {
-        int[][] toAdd = {{1}};
-        currPartition.put(1, toAdd);
-        return decompose(n);
-    }
     public static int[][] appendArray(int r, int[] toAppend, int[][] array)
     {
         int sal = array.length;   //determines length of secondArray
@@ -101,16 +95,6 @@ public class Solution
         }
 
         currPartition.put(n, result);
-        return result;
-    }
-    public static int[][] convertIntegers(ArrayList<int[]> integers)
-    {
-        int[][] result = new int[integers.size()][];
-        for (int i=0; i < result.length; i++)
-        {
-            int[] ret = integers.get(i);
-            result[i] = ret;
-        }
         return result;
     }
     public static BigInteger CountTotalCyclesOfGroupForPartition(int[] partition, int partitionOf)

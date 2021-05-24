@@ -25,12 +25,42 @@ public class SolutionTest
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
     @Test
+    public void Given5x2MatrixWith3StatesFindAllEquivalenceClasses()
+    {
+        int w = 5;
+        int h = 2;
+        int s = 3;
+        String expectedAnswer = "678";
+        String actualAnswer = Solution.getDistinctConfigurationsOf(w,h,s);
+        Assertions.assertEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
+    public void Given5x5MatrixWith5StatesFindAllEquivalenceClasses()
+    {
+        int w = 5;
+        int h = 5;
+        int s = 5;
+        String expectedAnswer = "20834113243925";
+        String actualAnswer = Solution.getDistinctConfigurationsOf(w,h,s);
+        Assertions.assertEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
     public void FindDistinctNonEquivConfigurationsOf2x3MatrixWith4Colors()
     {
         int w = 3;
         int h = 2;
         int s = 4;
         String expectedAnswer = "430";
+        String actualAnswer = Solution.getDistinctConfigurationsOf(w,h,s);
+        Assertions.assertEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
+    public void FindDistinctNonEquivConfigurationsOf1x1MatrixWith4Colors()
+    {
+        int w = 1;
+        int h = 1;
+        int s = 4;
+        String expectedAnswer = "4";
         String actualAnswer = Solution.getDistinctConfigurationsOf(w,h,s);
         Assertions.assertEquals(expectedAnswer, actualAnswer);
     }
@@ -54,6 +84,17 @@ public class SolutionTest
                 {2,2},
                 {2,1,1},
                 {1,1,1,1},
+        };
+        int[][] actualAnswer = Solution.decompose(w);
+        Assertions.assertArrayEquals(expectedAnswer, actualAnswer);
+    }
+    @Test
+    public void FindPartitionOf2()
+    {
+        int w = 2;
+        int[][] expectedAnswer = {
+                {2},
+                {1,1}
         };
         int[][] actualAnswer = Solution.decompose(w);
         Assertions.assertArrayEquals(expectedAnswer, actualAnswer);
